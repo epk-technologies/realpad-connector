@@ -18,10 +18,14 @@ class Export extends AbstractExport {
     {
         /** @var Export $export */
         $export = parent::createFromXML($element);
-        foreach($export->project as $project_element){
-            $project = ProjectSimple::createFromXML($project_element);
-            $export->addProject($project);
+
+        if(isset($element->project)){
+            foreach($element->project as $project_element){
+                $project = ProjectSimple::createFromXML($project_element);
+                $export->addProject($project);
+            }
         }
+
         return $export;
     }
 

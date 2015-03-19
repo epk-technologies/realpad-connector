@@ -1,7 +1,10 @@
 <?php
-define("REALPAD_TEST_ENDPOINT", "https://dev.realpad.eu/ws/v10/");
-define("REALPAD_TEST_CMS_LOGIN", 'xxx');
-define("REALPAD_TEST_CMS_PASSWORD", 'yyy');
+define("REALPAD_TEST_ENDPOINT", "https://cms.realpad.eu/ws/v10/");
+define("REALPAD_TEST_CMS_LOGIN", 'xx');
+define("REALPAD_TEST_CMS_PASSWORD", 'yy');
+define("REALPAD_TEST_DEVELOPER_ID", 12345);
+define("REALPAD_TEST_SCREEN_ID", 2);
+define("REALPAD_TEST_PROJECT_ID", 123456);
 
 $base_path = dirname(__DIR__) . DIRECTORY_SEPARATOR;
 spl_autoload_register(

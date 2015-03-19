@@ -6,6 +6,23 @@ use RealPadConnector\Utils;
 
 class Flat extends Object {
 
+    const STATUS_FREE = 0;
+    const STATUS_PRE_RESERVED = 1;
+    const STATUS_RESERVED = 2;
+    const STATUS_SOLD = 3;
+
+    const FLAT_TYPE_FLAT = 1;
+    const FLAT_TYPE_PARKING = 2;
+    const FLAT_TYPE_CELLAR = 3;
+    const FLAT_TYPE_OUTDOOR_PARKING = 4;
+    const FLAT_TYPE_GARAGE = 5;
+    const FLAT_TYPE_COMMERCIAL_SPACE = 6;
+    const FLAT_TYPE_FAMILY_HOUSE = 7;
+    const FLAT_TYPE_LAND = 8;
+    const FLAT_TYPE_ATELIER = 9;
+    const FLAT_TYPE_OFFICE = 10;
+    const FLAT_TYPE_ART_WORKSHOP = 11;
+
     /**
      * @var Picture[]
      */

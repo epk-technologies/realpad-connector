@@ -13,6 +13,8 @@ class AbstractClient {
     const PARAM_LOGIN = 'login';
     const PARAM_PASSWORD = 'password';
 
+    const SERVICE_GET_RESOURCE = 'get-resource';
+
     /**
      * @var string
      */
@@ -75,15 +77,37 @@ class AbstractClient {
      * @param string $service_name
      * @param array $parameters [optional]
      * @param null|Response $response [reference][optional]
+     * @param bool $xml_expected
      * @return \SimpleXMLElement
+     * @throws Exception
      * @throws \Httpful\Exception\ConnectionErrorException
      */
-    public function sendRequest($service_name, array $parameters = array(), &$response = null)
+    public function sendRequest($service_name, array $parameters = array(), &$response = null, $xml_expected = true)
     {
         $request = $this->createRequest($service_name, $parameters);
+        //$request->expectsType(Mime::XML);
+
         /** @var Response $response */
-        $response = $request->send();
-        //todo: check body
+        $response = @$request->send();
+        switch($response->code){
+            case 200:
+                if($xml_expected && !$response->body instanceof \SimpleXMLElement){
+                    throw new Exception("Invalid response data - SimpleXMLElement expected", Exception::CODE_INVALID_RESPONSE);
+                }
+                break;
+
+            case 400:
+                throw new Exception("Bad request", Exception::CODE_BAD_REQUEST);
+
+            case 401:
+                throw new Exception("Authentication failed", Exception::CODE_NOT_AUTHORIZED);
+
+            case 418:
+                throw new Exception("API version deprecated", Exception::CODE_API_VERSION_DEPRECATED);
+
+            default:
+                throw new Exception("Unsupported response code {$response->code}", Exception::CODE_INVALID_RESPONSE);
+        }
         return $response->body;
     }
 
@@ -142,18 +166,35 @@ class AbstractClient {
     /**
      * @param string $resource_ID
      * @param null|string $content_type [optional]
-     * @return array|object|string
+     * @return string
      * @throws \Httpful\Exception\ConnectionErrorException
      */
     public function getResourceData($resource_ID, &$content_type = null)
     {
-        $request = $this->createRequest('get-resource', array("uid" => $resource_ID));
         /** @var Response $response */
-        $response = $request->send();
-        //todo: check response
-        $content_type = $response->content_type;
+        $data = $this->sendRequest(
+            self::SERVICE_GET_RESOURCE,
+            array("uid" => $resource_ID),
+            $response,
+            false
+        );
 
-        return $response->body;
+        $content_type = $response->content_type;
+        return (string)$data;
+    }
+
+    /**
+     * @param string $resource_ID
+     * @param bool $exit [optional]
+     */
+    public function displayResource($resource_ID, $exit = true)
+    {
+        $data = $this->getResourceData($resource_ID, $content_type);
+        header("Content-Type: {$content_type}");
+        echo $data;
+        if($exit){
+            exit;
+        }
     }
 
 

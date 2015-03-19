@@ -19,4 +19,23 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
         );
     }
 
+    function test_listProjects()
+    {
+        $export = $this->client->listProjects();
+        $this->assertNotEmpty($export->getProjects());
+        $this->assertInstanceOf('RealPadConnector\CMS\ListProjects\ProjectSimple', $export->getProject(REALPAD_TEST_PROJECT_ID));
+    }
+
+    function test_getAllProjects()
+    {
+        $export = $this->client->getAllProjects();
+        $this->assertNotEmpty($export->getProjects());
+        $this->assertInstanceOf('RealPadConnector\CMS\Project', $export->getProject(REALPAD_TEST_PROJECT_ID));
+    }
+
+    function test_getProject()
+    {
+        $project = $this->client->getProject(REALPAD_TEST_PROJECT_ID, REALPAD_TEST_DEVELOPER_ID);
+        $this->assertInstanceOf('RealPadConnector\CMS\Project', $project);
+    }
 }

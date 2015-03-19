@@ -8,7 +8,7 @@
 			"email": "jan.egert@epk-technologies.com"
 		}
 	],
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"minimum-stability": "dev",
 	"require": {
 		"php": ">=5.3.0",
