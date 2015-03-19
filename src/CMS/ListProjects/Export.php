@@ -3,7 +3,7 @@ namespace RealPadConnector\CMS\ListProjects;
 
 use RealPadConnector\CMS\AbstractExport;
 
-class Export extends AbstractExport {
+class Export extends AbstractExport implements \Countable,\Iterator {
 
     /**
      * @var ProjectSimple[]
@@ -86,5 +86,47 @@ class Export extends AbstractExport {
         }
     }
 
+    /**
+     * @return ProjectSimple|bool
+     */
+    public function current()
+    {
+        return current($this->projects);
+    }
+
+    public function next()
+    {
+        next($this->projects);
+    }
+
+
+    /**
+     * @return int|null
+     */
+    public function key()
+    {
+        return key($this->projects);
+    }
+
+    /**
+     * @return bool
+     */
+    public function valid()
+    {
+        return key($this->projects) !== null;
+    }
+
+    public function rewind()
+    {
+        reset($this->projects);
+    }
+
+    /**
+     * @return int
+     */
+    public function count()
+    {
+        return count($this->projects);
+    }
 
 }

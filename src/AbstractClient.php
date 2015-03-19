@@ -77,21 +77,23 @@ class AbstractClient {
      * @param string $service_name
      * @param array $parameters [optional]
      * @param null|Response $response [reference][optional]
-     * @param bool $xml_expected
+     * @param string $expected_response_type [optional]
      * @return \SimpleXMLElement
      * @throws Exception
      * @throws \Httpful\Exception\ConnectionErrorException
      */
-    public function sendRequest($service_name, array $parameters = array(), &$response = null, $xml_expected = true)
+    public function sendRequest($service_name, array $parameters = array(), &$response = null, $expected_response_type = Mime::XML)
     {
         $request = $this->createRequest($service_name, $parameters);
-        //$request->expectsType(Mime::XML);
+        if($expected_response_type){
+            $request->expectsType($expected_response_type);
+        }
 
         /** @var Response $response */
         $response = @$request->send();
         switch($response->code){
             case 200:
-                if($xml_expected && !$response->body instanceof \SimpleXMLElement){
+                if($expected_response_type ==  Mime::XML && !$response->body instanceof \SimpleXMLElement){
                     throw new Exception("Invalid response data - SimpleXMLElement expected", Exception::CODE_INVALID_RESPONSE);
                 }
                 break;
