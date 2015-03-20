@@ -5,7 +5,9 @@
 	"authors": [
 		{
 			"name": "Jan Egert",
-			"email": "jan.egert@epk-technologies.com"
+			"email": "jan.egert@epk-technologies.com",
+			"role": "CTO",
+			"homepage": "http://www.epk-technologies.com/"
 		}
 	],
 	"version": "0.1.1",
@@ -19,7 +21,7 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"RealPadConnector": "src/"
+			"RealPadConnector\\": "src/"
 		}
 	}
 }
