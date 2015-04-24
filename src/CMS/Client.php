@@ -10,6 +10,29 @@ class Client extends AbstractClient {
     const SERVICE_GET_PROJECT = 'get-project';
 
     /**
+     * @var int
+     */
+    protected $screen_ID = 2;
+
+    /**
+     * @return int
+     */
+    public function getScreenID()
+    {
+        return $this->screen_ID;
+    }
+
+    /**
+     * @param int $screen_ID
+     */
+    public function setScreenID($screen_ID)
+    {
+        $this->screen_ID = (int)$screen_ID;
+    }
+
+
+
+    /**
      * @return ListProjects\Export
      */
     function listProjects()
@@ -23,8 +46,12 @@ class Client extends AbstractClient {
      * @param int $screen_ID [optional]
      * @return GetAllProjects\Export
      */
-    function getAllProjects($screen_ID = 2)
+    function getAllProjects($screen_ID = null)
     {
+        if(!$screen_ID){
+            $screen_ID = $this->getScreenID();
+        }
+
         $xml = $this->sendRequest(
             self::SERVICE_GET_ALL_PROJECTS,
             array('screenid' => (int)$screen_ID),
@@ -40,8 +67,12 @@ class Client extends AbstractClient {
      * @param int $screen_ID [optional]
      * @return Project
      */
-    function getProject($ID, $developer_ID, $screen_ID = 2)
+    function getProject($ID, $developer_ID, $screen_ID = null)
     {
+        if(!$screen_ID){
+            $screen_ID = $this->getScreenID();
+        }
+
         $xml = $this->sendRequest(
             self::SERVICE_GET_PROJECT,
             array(
